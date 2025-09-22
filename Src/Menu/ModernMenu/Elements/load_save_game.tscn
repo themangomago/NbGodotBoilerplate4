@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://bqp26gsftw7eb"]
+
+[ext_resource type="FontFile" uid="uid://btmpm7wiopwuw" path="res://Assets/Fonts/OpenSans/OpenSans-Regular.ttf" id="1_o2lft"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqsge"]
+bg_color = Color(0.69411767, 0.24313726, 0.3254902, 0.5019608)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ym6fp"]
+bg_color = Color(0.69411767, 0.24313726, 0.3254902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5i445"]
+bg_color = Color(0.69411767, 0.24313726, 0.3254902, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ym6fp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pqsge"]
+
+[node name="LoadSaveGame" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+offset_right = 448.0
+offset_bottom = 32.0
+
+[node name="Titel" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_fonts/font = ExtResource("1_o2lft")
+theme_override_font_sizes/font_size = 14
+text = "TITEL"
+
+[node name="Timestamp" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Date" type="Label" parent="Timestamp"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_fonts/font = ExtResource("1_o2lft")
+theme_override_font_sizes/font_size = 10
+text = "2025-09-22"
+horizontal_alignment = 2
+
+[node name="Time" type="Label" parent="Timestamp"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_fonts/font = ExtResource("1_o2lft")
+theme_override_font_sizes/font_size = 10
+text = "19:19"
+horizontal_alignment = 2
+
+[node name="Spacer" type="Control" parent="."]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="DeleteButton" type="Button" parent="."]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_o2lft")
+theme_override_styles/normal = SubResource("StyleBoxFlat_pqsge")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ym6fp")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5i445")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ym6fp")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_pqsge")
+text = "DEL"

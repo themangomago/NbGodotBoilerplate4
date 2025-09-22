@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://xnh6ulpib0gw"]
+[gd_scene load_steps=7 format=3 uid="uid://xnh6ulpib0gw"]
 
 [ext_resource type="Shader" uid="uid://boqprqjbuqlbq" path="res://Src/Menu/ModernMenu/blur.gdshader" id="1_rkrk1"]
 [ext_resource type="Script" uid="uid://bda1qcen12on1" path="res://Src/Menu/ModernMenu/ModernMenu.gd" id="2_pv2gk"]
 [ext_resource type="Theme" uid="uid://b3q625u7kqhr4" path="res://Src/Menu/ModernMenu/ModernMenu.theme" id="3_u1sau"]
 [ext_resource type="FontFile" uid="uid://btmpm7wiopwuw" path="res://Assets/Fonts/OpenSans/OpenSans-Regular.ttf" id="4_2rb8d"]
+[ext_resource type="PackedScene" uid="uid://bqp26gsftw7eb" path="res://Src/Menu/ModernMenu/Elements/load_save_game.tscn" id="5_4ojvx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xd3ah"]
 shader = ExtResource("1_rkrk1")
@@ -37,6 +38,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MainMenu" type="Control" parent="Views"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -108,7 +110,119 @@ text = "TR_MENU_QUIT"
 alignment = 0
 clip_text = true
 
+[node name="LoadSaveWindow" type="Control" parent="Views"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="BgOverlay" type="ColorRect" parent="Views/LoadSaveWindow"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.4)
+
+[node name="w" type="ColorRect" parent="Views/LoadSaveWindow"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 128.0
+offset_right = -32.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.0784314)
+
+[node name="Label" type="Label" parent="Views/LoadSaveWindow/w"]
+layout_mode = 0
+offset_top = -40.0
+offset_right = 228.0
+offset_bottom = -3.0
+theme_override_fonts/font = ExtResource("4_2rb8d")
+theme_override_font_sizes/font_size = 24
+text = "TR_MENU_SAVE_GAME"
+
+[node name="scroll" type="ScrollContainer" parent="Views/LoadSaveWindow/w"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -480.0
+offset_bottom = -108.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="v" type="VBoxContainer" parent="Views/LoadSaveWindow/w/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LoadSaveGame" parent="Views/LoadSaveWindow/w/scroll/v" instance=ExtResource("5_4ojvx")]
+layout_mode = 2
+
+[node name="LoadSaveGame2" parent="Views/LoadSaveWindow/w/scroll/v" instance=ExtResource("5_4ojvx")]
+layout_mode = 2
+
+[node name="LoadSaveGame3" parent="Views/LoadSaveWindow/w/scroll/v" instance=ExtResource("5_4ojvx")]
+layout_mode = 2
+
+[node name="ButtonBack" type="Button" parent="Views/LoadSaveWindow/w"]
+layout_mode = 0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -40.0
+offset_right = 232.0
+offset_bottom = -8.0
+grow_vertical = 0
+theme = ExtResource("3_u1sau")
+theme_override_fonts/font = ExtResource("4_2rb8d")
+text = "TR_MENU_B_BACK"
+alignment = 0
+
+[node name="ButtonAccept" type="Button" parent="Views/LoadSaveWindow/w"]
+layout_mode = 0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 320.0
+offset_top = -40.0
+offset_right = 544.0
+offset_bottom = -8.0
+grow_vertical = 0
+theme = ExtResource("3_u1sau")
+theme_override_fonts/font = ExtResource("4_2rb8d")
+text = "TR_MENU_B_ACCEPT"
+alignment = 0
+
+[node name="WindowAssign" type="Panel" parent="Views/LoadSaveWindow"]
+visible = false
+layout_mode = 0
+offset_left = 272.0
+offset_top = 192.0
+offset_right = 624.0
+offset_bottom = 312.0
+
+[node name="Label" type="Label" parent="Views/LoadSaveWindow/WindowAssign"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Press any key to assign.
+Press ESC to cancel."
+autowrap_mode = 2
+metadata/_edit_lock_ = true
+
 [node name="Settings" type="Control" parent="Views"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -215,9 +329,11 @@ metadata/_edit_lock_ = true
 
 [connection signal="button_up" from="Views/MainMenu/v/ButtonResume" to="." method="_on_button_resume_button_up"]
 [connection signal="button_up" from="Views/MainMenu/v/ButtonNewGame" to="." method="_on_button_new_game_button_up"]
-[connection signal="button_up" from="Views/MainMenu/v/ButtonSaveGame" to="." method="_on_button_new_game_button_up"]
-[connection signal="button_up" from="Views/MainMenu/v/ButtonLoadGame" to="." method="_on_button_new_game_button_up"]
+[connection signal="button_up" from="Views/MainMenu/v/ButtonSaveGame" to="." method="_on_button_save_game_button_up"]
+[connection signal="button_up" from="Views/MainMenu/v/ButtonLoadGame" to="." method="_on_button_load_game_button_up"]
 [connection signal="button_up" from="Views/MainMenu/v/ButtonSettings" to="." method="_on_button_settings_button_up"]
 [connection signal="button_up" from="Views/MainMenu/v/ButtonQuit" to="." method="_on_button_quit_button_up"]
+[connection signal="button_up" from="Views/LoadSaveWindow/w/ButtonBack" to="." method="_on_button_back_button_up"]
+[connection signal="button_up" from="Views/LoadSaveWindow/w/ButtonAccept" to="." method="_on_button_accept_button_up"]
 [connection signal="button_up" from="Views/Settings/w/ButtonBack" to="." method="_on_button_back_button_up"]
 [connection signal="button_up" from="Views/Settings/w/ButtonAccept" to="." method="_on_button_accept_button_up"]

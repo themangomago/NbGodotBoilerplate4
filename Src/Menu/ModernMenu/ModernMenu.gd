@@ -222,14 +222,21 @@ func _submenu_button_up(category_name):
 
 func _switch(to):
 	if to == "MainMenu":
+		$Views/LoadSaveWindow.hide()
 		$Views/Settings.hide()
 		$Views/MainMenu.show()
 		_focus_object = null
 	elif to == "Settings":
+		$Views/LoadSaveWindow.hide()
 		$Views/MainMenu.hide()
 		$Views/Settings.show()
 		_focus_object = null
+	elif to == "Load":
+		$Views/MainMenu.hide()
+		$Views/Settings.hide()
+		$Views/LoadSaveWindow.show()
 
+		_focus_object = null
 
 func _gui_focus_changed(control: Control) -> void:
 	_focus_object = control
@@ -293,3 +300,11 @@ func _on_button_accept_button_up():
 	Global.save_user_config(Global.user_config)
 	# Navigate back
 	_on_button_back_button_up()
+
+
+func _on_button_save_game_button_up() -> void:
+	_switch("Save")
+
+
+func _on_button_load_game_button_up() -> void:
+	_switch("Load")
