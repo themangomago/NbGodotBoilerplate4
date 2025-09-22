@@ -1,23 +1,50 @@
-[gd_scene load_steps=3 format=3 uid="uid://blg2rwv5t75rx"]
+[gd_scene load_steps=2 format=3 uid="uid://blg2rwv5t75rx"]
 
 [ext_resource type="Script" uid="uid://dei3tva1w5e3o" path="res://Src/DummyGame/DummyGame.gd" id="1_5o7jg"]
-[ext_resource type="Texture2D" uid="uid://27ogiawe33cj" path="res://icon.svg" id="2_djn12"]
 
 [node name="DummyGame" type="Node2D"]
 script = ExtResource("1_5o7jg")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-modulate = Color(0.585062, 0.585062, 0.585062, 1)
-offset_right = 1152.0
-offset_bottom = 648.0
-texture = ExtResource("2_djn12")
-stretch_mode = 1
-
 [node name="HUD" type="CanvasLayer" parent="."]
 
-[node name="Button" type="Button" parent="HUD"]
-offset_right = 45.0
-offset_bottom = 31.0
-text = "Back"
+[node name="Panel" type="Panel" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = 64.0
+offset_right = -64.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[connection signal="button_up" from="HUD/Button" to="." method="_on_button_button_up"]
+[node name="MenuButton" type="Button" parent="HUD"]
+offset_right = 112.0
+offset_bottom = 40.0
+text = "Menu"
+
+[node name="DecButton" type="Button" parent="HUD"]
+offset_left = 336.0
+offset_top = 280.0
+offset_right = 448.0
+offset_bottom = 320.0
+text = "Decrease"
+
+[node name="IncButton" type="Button" parent="HUD"]
+offset_left = 640.0
+offset_top = 280.0
+offset_right = 752.0
+offset_bottom = 320.0
+text = "Increase"
+
+[node name="Label" type="Label" parent="HUD"]
+offset_left = 496.0
+offset_top = 288.0
+offset_right = 592.0
+offset_bottom = 311.0
+text = "Count: 0"
+horizontal_alignment = 1
+
+[connection signal="button_up" from="HUD/MenuButton" to="." method="_on_menu_button_button_up"]
+[connection signal="button_up" from="HUD/DecButton" to="." method="_on_dec_button_button_up"]
+[connection signal="button_up" from="HUD/IncButton" to="." method="_on_inc_button_button_up"]

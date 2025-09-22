@@ -87,6 +87,7 @@ texture = ExtResource("1_m175c")
 expand_mode = 5
 
 [node name="GameHolder" type="Node2D" parent="."]
+process_mode = 1
 
 [node name="Menu" type="CanvasLayer" parent="."]
 process_mode = 3

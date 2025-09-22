@@ -12,8 +12,7 @@ func _ready():
 	_add_default_commands()
 
 
-
-func _process(delta):
+func _physics_process(_delta: float) -> void:
 	if Input.is_action_just_pressed("ui_toggle_console"):
 		emit_signal("console_toggle")
 

@@ -16,17 +16,26 @@ func _ready() -> void:
 	Events.connect("menu_switch_new_game", new_game)
 	Events.connect("menu_switch_resume_game", resume_game)
 	Events.connect("menu_switch_main_menu", main_menu)
-
+	
+	# Show the main menu
+	main_menu() 
 
 func new_game() -> void:
-	var game_scene = load("res://Src/DummyGame/DummyGame.tscn").instantiate()
-	$GameHolder.add_child(game_scene)
+	# Remove instances if any
+	for instance in $GameHolder.get_children(): instance.queue_free()
+	# Create new instance
+	var game = load("res://Src/DummyGame/DummyGame.tscn").instantiate()
+	game.new_game()
+	$GameHolder.add_child(game)
+	# Hide the menu and process the game instance
 	$Menu/Menu.hide()
+	$GameHolder.process_mode = Node.PROCESS_MODE_INHERIT
 
 func resume_game() -> void:
 	$Menu/Menu.hide()
-	get_tree().paused = false
+	$GameHolder.process_mode = Node.PROCESS_MODE_INHERIT
 
 func main_menu() -> void:
-	$Menu/Menu.show()
-	get_tree().paused = true
+	print("menu")
+	$Menu/Menu.show_menu(true if $GameHolder.get_child_count() > 0 else false)
+	$GameHolder.process_mode = Node.PROCESS_MODE_DISABLED

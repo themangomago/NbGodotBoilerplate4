@@ -13,9 +13,12 @@ var core_config : Resource = null
 var resolution_list: Array
 
 
+const SAVE_PATH := "user://saves"
+
 ################################################################################
 # Video Functions
 ################################################################################
+#region Video Functions
 func vid_set_resolution_list(list: Array):
 	resolution_list = list
 
@@ -37,11 +40,12 @@ func vid_center_window() -> void: get_window().position = (DisplayServer.screen_
 
 ## Sets fullscreen
 func vid_set_fullscreen(value: bool) -> void: DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN) if value else DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-
+#endregion
 
 ################################################################################
 # User Config Functions
 ################################################################################
+#region User Config Functions
 func parse_user_config_model(model: Dictionary) -> Dictionary:
 	var config := {}
 	
@@ -107,3 +111,40 @@ func load_user_config(schema: Dictionary) -> Dictionary:
 func save_user_config(data: Dictionary) -> void:
 	var file := FileAccess.open("user://config.cfg", FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
+#endregion
+
+################################################################################
+# Save Game Helper
+################################################################################
+#region Save Game Helper
+func scan_savegames() -> Array:
+	var saves : Array[SaveGameFile] = []
+	var dir := DirAccess.open(SAVE_PATH)
+	
+	# Directory does not exist - create it
+	if dir == null:
+		DirAccess.make_dir_recursive_absolute(SAVE_PATH)
+		return saves
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.ends_with(".sav"):
+			var header = load_save_header(file_name)
+			if header: saves.append(header)
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	return saves
+
+func load_save_header(file_name: String) -> SaveGameFile:
+	var path = SAVE_PATH + "/" + file_name
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null: return null
+	var version = file.get_32()
+	var timestamp = file.get_64()
+	var savename = file.get_pascal_string()
+	var is_autosave = file.get_8() == 1
+	file.close()
+	return SaveGameFile.new(version, timestamp, savename, file_name, is_autosave)
+	
+#endregion

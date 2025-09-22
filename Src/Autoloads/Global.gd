@@ -193,13 +193,10 @@ func initialize(manager: Node):
 	
 	# Setup Logger
 	Log.setup(manager.config)
-	
-	Log.error("test error")
-	Log.info("test info")
-	Log.warn("test warn")
-	Log.debug("test debug")
-
-
+	# Log.error("test error")
+	# Log.info("test info")
+	# Log.warn("test warn")
+	# Log.debug("test debug")
 
 	# Video setup
 	vid_setup()

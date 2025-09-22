@@ -26,6 +26,16 @@ func _ready():
 	#Events.connect("menu_control_key_assign_entered", Callable(self, "_window_assign_show"))
 	#Events.connect("menu_control_key_assign_finished", Callable(self, "_window_assign_hide"))
 
+func show_menu(isGameActive: bool) -> void:
+	if isGameActive:
+		$Views/MainMenu/v/ButtonResume.show()
+		$Views/MainMenu/v/ButtonSaveGame.show()
+	else:
+		$Views/MainMenu/v/ButtonResume.hide()
+		$Views/MainMenu/v/ButtonSaveGame.hide()
+	show()
+
+
 func _window_assign_show():
 	$Views/Settings/WindowAssign.show()
 
@@ -63,6 +73,7 @@ func _init_menu():
 
 
 func _focus_check(event):
+	# TODO: necessary?
 	if event is InputEventKey:
 		#if not event.pressed:
 		# TODO: keyboard and gamepad codes
