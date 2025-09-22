@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cp3v8nnhuk2yb"]
+
+[ext_resource type="Theme" uid="uid://b3q625u7kqhr4" path="res://Src/Menu/ModernMenu/ModernMenu.theme" id="1_twqjr"]
+[ext_resource type="FontFile" uid="uid://btmpm7wiopwuw" path="res://Assets/Fonts/OpenSans/OpenSans-Regular.ttf" id="2_cxfuc"]
+
+[node name="CategoryButton" type="Button"]
+custom_minimum_size = Vector2(0, 40)
+offset_right = 224.0
+offset_bottom = 40.0
+theme = ExtResource("1_twqjr")
+theme_override_fonts/font = ExtResource("2_cxfuc")
+text = "TR_MENU_QUIT"
+alignment = 0
+clip_text = true

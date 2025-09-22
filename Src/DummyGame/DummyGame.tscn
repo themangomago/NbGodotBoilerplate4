@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://blg2rwv5t75rx"]
+
+[ext_resource type="Script" uid="uid://dei3tva1w5e3o" path="res://Src/DummyGame/DummyGame.gd" id="1_5o7jg"]
+[ext_resource type="Texture2D" uid="uid://27ogiawe33cj" path="res://icon.svg" id="2_djn12"]
+
+[node name="DummyGame" type="Node2D"]
+script = ExtResource("1_5o7jg")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0.585062, 0.585062, 0.585062, 1)
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("2_djn12")
+stretch_mode = 1
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Button" type="Button" parent="HUD"]
+offset_right = 45.0
+offset_bottom = 31.0
+text = "Back"
+
+[connection signal="button_up" from="HUD/Button" to="." method="_on_button_button_up"]

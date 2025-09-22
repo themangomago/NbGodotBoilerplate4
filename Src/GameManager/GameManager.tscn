@@ -1,0 +1,115 @@
+[gd_scene load_steps=9 format=3 uid="uid://d37wsrleuvera"]
+
+[ext_resource type="Texture2D" uid="uid://da57sl57hrjwa" path="res://Assets/NBSplash.png" id="1_m175c"]
+[ext_resource type="Script" uid="uid://bdpkqvxr4u28u" path="res://Src/GameManager/GameManager.gd" id="1_v54ow"]
+[ext_resource type="Resource" uid="uid://cs6j6jocbtvlj" path="res://Src/GameManager/GameConfig.tres" id="2_1sosg"]
+[ext_resource type="PackedScene" uid="uid://xnh6ulpib0gw" path="res://Src/Menu/ModernMenu/ModernMenu.tscn" id="2_xwgdu"]
+[ext_resource type="PackedScene" uid="uid://bkgxoe2r33v4x" path="res://Src/Console/ConsoleUi.tscn" id="5_g5sgp"]
+
+[sub_resource type="Animation" id="Animation_v54ow"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_xwgdu"]
+resource_name = "intro"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v54ow"]
+_data = {
+&"RESET": SubResource("Animation_v54ow"),
+&"intro": SubResource("Animation_xwgdu")
+}
+
+[node name="GameManager" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v54ow")
+config = ExtResource("2_1sosg")
+
+[node name="BgImage" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_m175c")
+expand_mode = 5
+
+[node name="GameHolder" type="Node2D" parent="."]
+
+[node name="Menu" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="Menu" parent="Menu" instance=ExtResource("2_xwgdu")]
+
+[node name="Console" type="CanvasLayer" parent="."]
+
+[node name="Console" parent="Console" instance=ExtResource("5_g5sgp")]
+
+[node name="Intro" type="CanvasLayer" parent="."]
+
+[node name="IntroPlayer" type="AnimationPlayer" parent="Intro"]
+root_node = NodePath("../BootSplash")
+libraries = {
+&"": SubResource("AnimationLibrary_v54ow")
+}
+
+[node name="BootSplash" type="TextureRect" parent="Intro"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_m175c")
+expand_mode = 5

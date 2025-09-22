@@ -1,0 +1,85 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkgxoe2r33v4x"]
+
+[ext_resource type="Script" uid="uid://d2ch5vu36547o" path="res://Src/Console/ConsoleUi.gd" id="1_oluyp"]
+[ext_resource type="FontFile" uid="uid://btmpm7wiopwuw" path="res://Assets/Fonts/OpenSans/OpenSans-Regular.ttf" id="2_isfbu"]
+[ext_resource type="FontFile" uid="uid://dvd81wt1ce7xo" path="res://Assets/Fonts/OpenSans/OpenSans-Bold.ttf" id="3_rhcwj"]
+[ext_resource type="FontFile" uid="uid://koh58dbftfwk" path="res://Assets/Fonts/OpenSans/OpenSans-Italic.ttf" id="4_47evc"]
+
+[node name="Console" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+script = ExtResource("1_oluyp")
+
+[node name="Window" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 320.0
+grow_horizontal = 2
+
+[node name="Bg" type="ColorRect" parent="Window"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.184314, 0.184314, 0.184314, 0.501961)
+
+[node name="v" type="VBoxContainer" parent="Window"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="History" type="RichTextLabel" parent="Window/v"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_isfbu")
+theme_override_fonts/bold_font = ExtResource("3_rhcwj")
+theme_override_fonts/bold_italics_font = ExtResource("4_47evc")
+theme_override_fonts/italics_font = ExtResource("4_47evc")
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+scroll_following = true
+context_menu_enabled = true
+selection_enabled = true
+
+[node name="Input" type="LineEdit" parent="Window/v"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_isfbu")
+theme_override_font_sizes/font_size = 12
+caret_blink = true
+
+[node name="AutocompleteWindow" type="ItemList" parent="."]
+visible = false
+clip_contents = false
+custom_minimum_size = Vector2(120, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.49400002
+anchor_bottom = 0.49400002
+offset_top = -0.11199951
+offset_right = 128.0
+offset_bottom = 47.888
+theme_override_constants/v_separation = 3
+theme_override_fonts/font = ExtResource("2_isfbu")
+theme_override_font_sizes/font_size = 12
+auto_height = true
+item_count = 2
+item_0/text = "test"
+item_1/text = "test"
+
+[connection signal="focus_exited" from="Window/v/Input" to="." method="_on_input_focus_exited"]
+[connection signal="gui_input" from="Window/v/Input" to="." method="_on_input_gui_input"]
+[connection signal="text_changed" from="Window/v/Input" to="." method="_on_input_text_changed"]
+[connection signal="text_submitted" from="Window/v/Input" to="." method="_on_input_text_submitted"]

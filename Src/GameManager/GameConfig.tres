@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="NbCoreConfig" load_steps=2 format=3 uid="uid://cs6j6jocbtvlj"]
+
+[ext_resource type="Script" uid="uid://nche1bruwgvl" path="res://_NbCore/NbCoreConfig.gd" id="1_lbq16"]
+
+[resource]
+script = ExtResource("1_lbq16")
+debug = true
+skip_intro = true
+rng_default_seed = 0
+user_config_version = 1
+user_config_auto_upgrade = true
+user_config_sanity_check = true
+controls_allowed_input_devices = 7
+video_support_fullscreen = true
+video_enable_screenshots = true
+video_upscaler_enabled = true
+video_upscaler_base_resolution = Vector2i(320, 180)
+logger_file_enabled = true
+logger_file_file_name = "log.txt"
+logger_file_file_path = "user://"
+logger_file_time_stamp = true
+logger_file_trace_level_flags = 3
+logger_stdout_enabled = true
+logger_stdout_rich_text = true
+logger_stdout_time_stamp = true
+logger_stdout_trace_level_flags = 15
+logger_console_enabled = true
+logger_console_time_stamp = true
+logger_console_trace_level_flags = 7
+metadata/_custom_type_script = "uid://nche1bruwgvl"
