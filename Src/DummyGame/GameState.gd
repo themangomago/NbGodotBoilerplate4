@@ -15,4 +15,4 @@ func load_game(state: Dictionary) -> bool:
 	return false
 
 func get_payload() -> Dictionary:
-	return {"counter_value": counter_value}
+	return {"counter_value": counter_value, "test_value": 13}

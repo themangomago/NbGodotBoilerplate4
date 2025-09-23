@@ -55,7 +55,10 @@ func save_game(savename: String) -> void:
 	$Menu/Menu.hide()
 
 func overwrite_game(id: int) -> void:
-	pass
+	print("overwrite")
+	$GameHolder.process_mode = Node.PROCESS_MODE_INHERIT
+	$GameHolder.get_child(0).save_game(id)
+	$Menu/Menu.hide()
 
 func resume_game() -> void:
 	$Menu/Menu.hide()

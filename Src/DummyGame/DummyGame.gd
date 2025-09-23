@@ -17,8 +17,11 @@ func new_game():
 func load_game(id: int):
 	var file_name: String = Global.savegames_headers[id].get_filename()
 	var payload: Dictionary = Global.load_save_payload(file_name)
+	
+	print("load " + str(id))
+	print(payload)
 	gameState = GameState.new()
-	if not gameState.load_state(payload):
+	if not gameState.load_game(payload):
 		Log.error("Could not load save file: " + str(file_name))
 		Events.emit_signal("menu_switch_main_menu")
 		return
@@ -26,6 +29,8 @@ func load_game(id: int):
 
 func save_game(id: int):
 	var payload = gameState.get_payload()
+	print("save " + str(id))
+	print(payload)
 	# Header is created at game manager
 	var header: SaveGameFile = Global.savegames_headers[id]
 	

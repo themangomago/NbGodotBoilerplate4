@@ -241,6 +241,7 @@ func _switch(to):
 		$Views/Settings.show()
 		_focus_object = null
 	elif to == "Load":
+		$Views/LoadSaveWindow/w/Label.set_text(tr("TR_MENU_LOAD_GAME"))
 		$Views/MainMenu.hide()
 		$Views/Settings.hide()
 		# Remove savegames
@@ -253,9 +254,11 @@ func _switch(to):
 			el.connect("loadsave_load", _loadsave_load)
 			el.connect("loadsave_delete", _loadsave_delete)
 			$Views/LoadSaveWindow/w/scroll/v.add_child(el)
+			id += 1
 		$Views/LoadSaveWindow.show()
 		_focus_object = null
 	elif to == "Save":
+		$Views/LoadSaveWindow/w/Label.set_text(tr("TR_MENU_SAVE_GAME"))
 		$Views/MainMenu.hide()
 		$Views/Settings.hide()
 		# Remove savegames
@@ -268,11 +271,13 @@ func _switch(to):
 			el.connect("loadsave_overwrite", _loadsave_overwrite)
 			el.connect("loadsave_delete", _loadsave_delete)
 			$Views/LoadSaveWindow/w/scroll/v.add_child(el)
+			id += 1
 		$Views/LoadSaveWindow.show()
 		_focus_object = null
 
 #region load-save
 func _loadsave_load(id: int) -> void:
+	_switch("MainMenu")
 	Events.emit_signal("menu_switch_load_game", id)
 	
 func _loadsave_overwrite(id) -> void:
@@ -294,14 +299,16 @@ func _on_load_save_button_no_button_up() -> void:
 
 func _on_load_save_button_yes_button_up() -> void:
 	$Views/LoadSaveWindow/Window.hide()
-	
-	# Refresh view
-	_switch(_current_view)
+	if _loadsave_window_type == "overwrite":
+		_switch("MainMenu")
+		Events.emit_signal("menu_switch_overwrite_game", _loadsave_window_id)
+
 
 func _on_save_button_button_up() -> void:
 	var file = $Views/LoadSaveWindow/w/NewSave/LineEdit.text
-	Events.emit_signal("menu_switch_save_game", file)
 	_switch("MainMenu")
+	Events.emit_signal("menu_switch_save_game", file)
+	
 
 #endregion
 

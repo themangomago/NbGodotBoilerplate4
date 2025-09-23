@@ -185,6 +185,9 @@ func _ready():
 	vid_signal_setup()
 	
 	scan_savegames()
+	sort_savegames()
+	
+	
 	## DUMMY
 	#(version: int, timestamp: int, savename: String, filename: String, is_autosave: bool)
 	#var dummysave1 = SaveGameFile.new(1, 1758472438, "Test Save 1", "dummyfile.sav", false)

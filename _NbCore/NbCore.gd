@@ -137,6 +137,17 @@ func scan_savegames() -> void:
 	dir.list_dir_end()
 	return
 
+func sort_savegames() -> void:
+	if savegames_headers.is_empty():
+		return
+	savegames_headers.sort_custom(func(a: SaveGameFile, b: SaveGameFile) -> bool:
+		var at := a.get_timestamp()
+		var bt := b.get_timestamp()
+		if at == bt:
+			return a.get_savename().nocasecmp_to(b.get_savename()) < 0
+		return at > bt
+	)
+
 func load_save_header(file_name: String) -> SaveGameFile:
 	var path = SAVE_PATH + "/" + file_name
 	var file := FileAccess.open(path, FileAccess.READ)
