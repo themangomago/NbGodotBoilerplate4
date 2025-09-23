@@ -26,6 +26,9 @@ signal take_screenshot()
 ###########################################################################
 
 signal menu_switch_new_game()
+signal menu_switch_load_game(index: int)
+signal menu_switch_save_game(save_name: String)
+signal menu_switch_overwrite_game(index: int)
 signal menu_switch_resume_game()
 signal menu_switch_main_menu()
 

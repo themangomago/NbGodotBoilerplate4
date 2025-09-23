@@ -12,6 +12,7 @@ var core_config : Resource = null
 ## Resolution list derived from USER_CONFIG_MODEL
 var resolution_list: Array
 
+var savegames_headers : Array[SaveGameFile]
 
 const SAVE_PATH := "user://saves"
 
@@ -117,24 +118,24 @@ func save_user_config(data: Dictionary) -> void:
 # Save Game Helper
 ################################################################################
 #region Save Game Helper
-func scan_savegames() -> Array:
-	var saves : Array[SaveGameFile] = []
+func scan_savegames() -> void:
 	var dir := DirAccess.open(SAVE_PATH)
+	savegames_headers = []
 	
 	# Directory does not exist - create it
 	if dir == null:
 		DirAccess.make_dir_recursive_absolute(SAVE_PATH)
-		return saves
+		return
 	
 	dir.list_dir_begin()
 	var file_name = dir.get_next()
 	while file_name != "":
 		if not dir.current_is_dir() and file_name.ends_with(".sav"):
 			var header = load_save_header(file_name)
-			if header: saves.append(header)
+			if header: savegames_headers.append(header)
 		file_name = dir.get_next()
 	dir.list_dir_end()
-	return saves
+	return
 
 func load_save_header(file_name: String) -> SaveGameFile:
 	var path = SAVE_PATH + "/" + file_name
@@ -146,5 +147,48 @@ func load_save_header(file_name: String) -> SaveGameFile:
 	var is_autosave = file.get_8() == 1
 	file.close()
 	return SaveGameFile.new(version, timestamp, savename, file_name, is_autosave)
+
+func load_save_payload(file_name: String) -> Dictionary:
+	var path = SAVE_PATH + "/" + file_name
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return {}
 	
+	# Skip header
+	var _version = file.get_32()
+	var _timestamp = file.get_64()
+	var _savename = file.get_pascal_string()
+	var _is_autosave = file.get_8() == 1
+	
+	# Dictionary laden
+	var payload: Dictionary = {}
+	if not file.eof_reached():
+		payload = file.get_var()
+	
+	file.close()
+	return payload
+
+
+
+func save_game(header: SaveGameFile, payload: Dictionary) -> bool:
+	var path := SAVE_PATH + "/" + header.get_filename()
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		push_error("Could not open file for writing: %s" % path)
+		return false
+
+	# Header
+	file.store_32(header.get_version())
+	file.store_64(header.get_timestamp())
+	file.store_pascal_string(header.get_savename())
+	file.store_8(1 if header.get_autosave() else 0)
+
+	# Payload - use store_var so load_save_payload() can read it with get_var()
+	# Keep objects disabled for safety and portability
+	file.store_var(payload, false)
+
+	file.flush() # optional but nice to have
+	file.close()
+	return true
+
 #endregion

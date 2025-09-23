@@ -19,7 +19,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.956863, 0.956863, 0.956863, 0.862745)
+color = Color(0.95686275, 0.95686275, 0.95686275, 0.8627451)
 
 [node name="h" type="HBoxContainer" parent="."]
 layout_mode = 0
@@ -32,7 +32,7 @@ focus_mode = 2
 [node name="Label" type="Label" parent="h"]
 layout_mode = 2
 mouse_filter = 1
-theme_override_colors/font_color = Color(0.956863, 0.956863, 0.956863, 1)
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
 theme_override_fonts/font = ExtResource("2_8w8nt")
 text = "TITLE"
 
@@ -45,7 +45,7 @@ mouse_filter = 1
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 mouse_filter = 0
-theme_override_colors/font_color = Color(0.956863, 0.956863, 0.956863, 1)
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
 text = "<"
 horizontal_alignment = 1
 
@@ -53,7 +53,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(192, 0)
 layout_mode = 2
 mouse_filter = 1
-theme_override_colors/font_color = Color(0.956863, 0.956863, 0.956863, 1)
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
 theme_override_fonts/font = ExtResource("2_8w8nt")
 text = "OPTION1"
 horizontal_alignment = 1
@@ -63,7 +63,7 @@ clip_text = true
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 mouse_filter = 0
-theme_override_colors/font_color = Color(0.956863, 0.956863, 0.956863, 1)
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
 text = ">"
 horizontal_alignment = 1
 

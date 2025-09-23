@@ -10,9 +10,17 @@ extends Control
 @export var input_button_scene: PackedScene = preload("./Elements/input_button.tscn")
 @export var spacer_scene: PackedScene = preload("./Elements/spacer.tscn")
 
+@export var load_save_scene: PackedScene = preload("./Elements/load_save_game.tscn")
+
 
 var _focus_object: Control = null
 var _focus_keyboard: bool = false
+
+var _current_view: String = "MainMenu"
+
+var _loadsave_window_id: int = -1
+var _loadsave_window_type: String = "load"
+
 
 # Menu settings that has changed but not yet accepted
 var _pending_changes := []
@@ -221,6 +229,7 @@ func _submenu_button_up(category_name):
 
 
 func _switch(to):
+	_current_view = to
 	if to == "MainMenu":
 		$Views/LoadSaveWindow.hide()
 		$Views/Settings.hide()
@@ -234,9 +243,68 @@ func _switch(to):
 	elif to == "Load":
 		$Views/MainMenu.hide()
 		$Views/Settings.hide()
+		# Remove savegames
+		for e in $Views/LoadSaveWindow/w/scroll/v.get_children(): e.queue_free()
+		# Load savegames
+		var id = 0
+		for header in Global.savegames_headers:
+			var el = load_save_scene.instantiate()
+			el.setup(id, header, true)
+			el.connect("loadsave_load", _loadsave_load)
+			el.connect("loadsave_delete", _loadsave_delete)
+			$Views/LoadSaveWindow/w/scroll/v.add_child(el)
 		$Views/LoadSaveWindow.show()
-
 		_focus_object = null
+	elif to == "Save":
+		$Views/MainMenu.hide()
+		$Views/Settings.hide()
+		# Remove savegames
+		for e in $Views/LoadSaveWindow/w/scroll/v.get_children(): e.queue_free()
+		# Load savegames
+		var id = 0
+		for header in Global.savegames_headers:
+			var el = load_save_scene.instantiate()
+			el.setup(id, header, false)
+			el.connect("loadsave_overwrite", _loadsave_overwrite)
+			el.connect("loadsave_delete", _loadsave_delete)
+			$Views/LoadSaveWindow/w/scroll/v.add_child(el)
+		$Views/LoadSaveWindow.show()
+		_focus_object = null
+
+#region load-save
+func _loadsave_load(id: int) -> void:
+	Events.emit_signal("menu_switch_load_game", id)
+	
+func _loadsave_overwrite(id) -> void:
+	$Views/LoadSaveWindow/Window/Panel/s/Text.set_text(tr("TR_MENU_LOADSAVE_OVERWRITE_WINDOW_TEXT"))
+	$Views/LoadSaveWindow/Window.show()
+	_loadsave_window_id = id
+	_loadsave_window_type = "overwrite"
+	
+func _loadsave_delete(id) -> void:
+	$Views/LoadSaveWindow/Window/Panel/s/Text.set_text(tr("TR_MENU_LOADSAVE_DELETE_WINDOW_TEXT"))
+	$Views/LoadSaveWindow/Window.show()
+	_loadsave_window_id = id
+	_loadsave_window_type = "delete"
+
+
+func _on_load_save_button_no_button_up() -> void:
+	$Views/LoadSaveWindow/Window.hide()
+
+
+func _on_load_save_button_yes_button_up() -> void:
+	$Views/LoadSaveWindow/Window.hide()
+	
+	# Refresh view
+	_switch(_current_view)
+
+func _on_save_button_button_up() -> void:
+	var file = $Views/LoadSaveWindow/w/NewSave/LineEdit.text
+	Events.emit_signal("menu_switch_save_game", file)
+	_switch("MainMenu")
+
+#endregion
+
 
 func _gui_focus_changed(control: Control) -> void:
 	_focus_object = control

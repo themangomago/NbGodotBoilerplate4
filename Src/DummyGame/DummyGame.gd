@@ -7,14 +7,32 @@ func _ready() -> void:
 	print("Original Game")
 	ModManager.post_hook("dummy_game_ready")
 
+
+
 # Loads new game state and resets the game
 func new_game():
 	gameState = GameState.new()
 	change_counter(gameState.counter_value)
 
-func load_game():
+func load_game(id: int):
+	var file_name: String = Global.savegames_headers[id].get_filename()
+	var payload: Dictionary = Global.load_save_payload(file_name)
 	gameState = GameState.new()
-	gameState.load_state()
+	if not gameState.load_state(payload):
+		Log.error("Could not load save file: " + str(file_name))
+		Events.emit_signal("menu_switch_main_menu")
+		return
+	change_counter(gameState.counter_value)
+
+func save_game(id: int):
+	var payload = gameState.get_payload()
+	# Header is created at game manager
+	var header: SaveGameFile = Global.savegames_headers[id]
+	
+	if Global.save_game(header, payload):
+		print("Save completed")
+	else:
+		printerr("Save failed")
 
 
 func _on_menu_button_button_up() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://xnh6ulpib0gw"]
+[gd_scene load_steps=12 format=3 uid="uid://xnh6ulpib0gw"]
 
 [ext_resource type="Shader" uid="uid://boqprqjbuqlbq" path="res://Src/Menu/ModernMenu/blur.gdshader" id="1_rkrk1"]
 [ext_resource type="Script" uid="uid://bda1qcen12on1" path="res://Src/Menu/ModernMenu/ModernMenu.gd" id="2_pv2gk"]
@@ -12,6 +12,19 @@ shader_parameter/blur_factor = 0.5
 shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/blur_amount = 0.5
 shader_parameter/color_amount = 0.5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ojvx"]
+bg_color = Color(0.96862745, 0.96862745, 0.96862745, 0.5019608)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cyqe1"]
+bg_color = Color(0.96862745, 0.96862745, 0.96862745, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mftuv"]
+bg_color = Color(0.96862745, 0.96862745, 0.96862745, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_epmod"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6yxu1"]
 
 [node name="Menu" type="ColorRect"]
 material = SubResource("ShaderMaterial_xd3ah")
@@ -110,6 +123,24 @@ text = "TR_MENU_QUIT"
 alignment = 0
 clip_text = true
 
+[node name="Copyright" type="Label" parent="Views/MainMenu"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -17.5
+offset_top = -20.0
+offset_right = 17.5
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_fonts/font = ExtResource("4_2rb8d")
+theme_override_font_sizes/font_size = 10
+text = "© 2025 [Your Name or Studio] - Icons by Icon8"
+
 [node name="LoadSaveWindow" type="Control" parent="Views"]
 layout_mode = 1
 anchors_preset = 15
@@ -174,6 +205,54 @@ layout_mode = 2
 [node name="LoadSaveGame3" parent="Views/LoadSaveWindow/w/scroll/v" instance=ExtResource("5_4ojvx")]
 layout_mode = 2
 
+[node name="NewSave" type="HBoxContainer" parent="Views/LoadSaveWindow/w"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 384.0
+offset_right = 722.0
+offset_bottom = 416.0
+
+[node name="Label" type="Label" parent="Views/LoadSaveWindow/w/NewSave"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_fonts/font = ExtResource("4_2rb8d")
+text = "TR_MENU_LOADSAVE_NEW_SAVE"
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="Views/LoadSaveWindow/w/NewSave"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="LineEdit" type="LineEdit" parent="Views/LoadSaveWindow/w/NewSave"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "TR_MENU_LOADSAVE_SAVE_PLACEHOLDER"
+
+[node name="Spacer2" type="Control" parent="Views/LoadSaveWindow/w/NewSave"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="SaveButton" type="Button" parent="Views/LoadSaveWindow/w/NewSave"]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_pressed_color = Color(0.047058824, 0.047058824, 0.047058824, 1)
+theme_override_colors/font_hover_color = Color(0.047058824, 0.047058824, 0.047058824, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.047058824, 0.047058824, 0.047058824, 1)
+theme_override_fonts/font = ExtResource("4_2rb8d")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_4ojvx")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cyqe1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_mftuv")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_epmod")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_6yxu1")
+text = "TR_MENU_LOADSAVE_SAVE"
+icon_alignment = 1
+
 [node name="ButtonBack" type="Button" parent="Views/LoadSaveWindow/w"]
 layout_mode = 0
 anchor_top = 1.0
@@ -202,24 +281,78 @@ theme_override_fonts/font = ExtResource("4_2rb8d")
 text = "TR_MENU_B_ACCEPT"
 alignment = 0
 
-[node name="WindowAssign" type="Panel" parent="Views/LoadSaveWindow"]
+[node name="Window" type="ColorRect" parent="Views/LoadSaveWindow"]
 visible = false
-layout_mode = 0
-offset_left = 272.0
-offset_top = 192.0
-offset_right = 624.0
-offset_bottom = 312.0
-
-[node name="Label" type="Label" parent="Views/LoadSaveWindow/WindowAssign"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Press any key to assign.
-Press ESC to cancel."
+color = Color(0, 0, 0, 0.4)
+
+[node name="Panel" type="Panel" parent="Views/LoadSaveWindow/Window"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -176.0
+offset_top = -60.0
+offset_right = 176.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="s" type="Control" parent="Views/LoadSaveWindow/Window/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Text" type="Label" parent="Views/LoadSaveWindow/Window/Panel/s"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 72.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_2rb8d")
+theme_override_font_sizes/font_size = 16
+text = "TR_MENU_LOADSAVE_OVERWRITE_WINDOW_TEXT"
 autowrap_mode = 2
-metadata/_edit_lock_ = true
+
+[node name="LoadSaveButtonNo" type="Button" parent="Views/LoadSaveWindow/Window/Panel/s"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -32.0
+offset_right = 112.0
+grow_vertical = 0
+theme = ExtResource("3_u1sau")
+theme_override_fonts/font = ExtResource("4_2rb8d")
+text = "TR_NO"
+
+[node name="LoadSaveButtonYes" type="Button" parent="Views/LoadSaveWindow/Window/Panel/s"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -112.0
+offset_top = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_u1sau")
+theme_override_fonts/font = ExtResource("4_2rb8d")
+text = "TR_YES"
 
 [node name="Settings" type="Control" parent="Views"]
 visible = false
@@ -333,7 +466,10 @@ metadata/_edit_lock_ = true
 [connection signal="button_up" from="Views/MainMenu/v/ButtonLoadGame" to="." method="_on_button_load_game_button_up"]
 [connection signal="button_up" from="Views/MainMenu/v/ButtonSettings" to="." method="_on_button_settings_button_up"]
 [connection signal="button_up" from="Views/MainMenu/v/ButtonQuit" to="." method="_on_button_quit_button_up"]
+[connection signal="button_up" from="Views/LoadSaveWindow/w/NewSave/SaveButton" to="." method="_on_save_button_button_up"]
 [connection signal="button_up" from="Views/LoadSaveWindow/w/ButtonBack" to="." method="_on_button_back_button_up"]
 [connection signal="button_up" from="Views/LoadSaveWindow/w/ButtonAccept" to="." method="_on_button_accept_button_up"]
+[connection signal="button_up" from="Views/LoadSaveWindow/Window/Panel/s/LoadSaveButtonNo" to="." method="_on_load_save_button_no_button_up"]
+[connection signal="button_up" from="Views/LoadSaveWindow/Window/Panel/s/LoadSaveButtonYes" to="." method="_on_load_save_button_yes_button_up"]
 [connection signal="button_up" from="Views/Settings/w/ButtonBack" to="." method="_on_button_back_button_up"]
 [connection signal="button_up" from="Views/Settings/w/ButtonAccept" to="." method="_on_button_accept_button_up"]

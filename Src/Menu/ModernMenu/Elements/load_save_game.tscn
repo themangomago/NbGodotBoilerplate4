@@ -1,37 +1,77 @@
-[gd_scene load_steps=7 format=3 uid="uid://bqp26gsftw7eb"]
+[gd_scene load_steps=15 format=3 uid="uid://bqp26gsftw7eb"]
 
 [ext_resource type="FontFile" uid="uid://btmpm7wiopwuw" path="res://Assets/Fonts/OpenSans/OpenSans-Regular.ttf" id="1_o2lft"]
+[ext_resource type="Script" uid="uid://b0demenqr1q1c" path="res://Src/Menu/ModernMenu/Elements/load_save_game.gd" id="1_pqsge"]
+[ext_resource type="Texture2D" uid="uid://dr2b6ejrjttq1" path="res://Assets/Icons/icons8-delete-16.png" id="4_ve62j"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqsge"]
-bg_color = Color(0.69411767, 0.24313726, 0.3254902, 0.5019608)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ve62j"]
+bg_color = Color(0.96862745, 0.96862745, 0.96862745, 0.5019608)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ym6fp"]
-bg_color = Color(0.69411767, 0.24313726, 0.3254902, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_br5eh"]
+bg_color = Color(0.96862745, 0.96862745, 0.96862745, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5i445"]
-bg_color = Color(0.69411767, 0.24313726, 0.3254902, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rdjre"]
+bg_color = Color(0.96862745, 0.96862745, 0.96862745, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ym6fp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pqsge"]
 
-[node name="LoadSaveGame" type="HBoxContainer"]
-custom_minimum_size = Vector2(0, 32)
-offset_right = 448.0
-offset_bottom = 32.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqsge"]
+bg_color = Color(0.9372549, 0.49019608, 0.34117648, 0.5019608)
 
-[node name="Titel" type="Label" parent="."]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ym6fp"]
+bg_color = Color(0.9372549, 0.49019608, 0.34117648, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5i445"]
+bg_color = Color(0.9372549, 0.49019608, 0.34117648, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ve62j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qcejg"]
+bg_color = Color(0.69411767, 0.24313726, 0.3254902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bdw1d"]
+bg_color = Color(0.69411767, 0.24313726, 0.3254902, 1)
+
+[node name="LoadSaveGame" type="Control"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 760.0
+offset_bottom = 32.0
+script = ExtResource("1_pqsge")
+
+[node name="Bg" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.95686275, 0.95686275, 0.95686275, 0.8627451)
+
+[node name="h" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Titel" type="Label" parent="h"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
 theme_override_fonts/font = ExtResource("1_o2lft")
 theme_override_font_sizes/font_size = 14
-text = "TITEL"
+text = "Save Game Name"
 
-[node name="Timestamp" type="VBoxContainer" parent="."]
+[node name="Timestamp" type="VBoxContainer" parent="h"]
 layout_mode = 2
 
-[node name="Date" type="Label" parent="Timestamp"]
+[node name="Date" type="Label" parent="h/Timestamp"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
 theme_override_fonts/font = ExtResource("1_o2lft")
@@ -39,7 +79,7 @@ theme_override_font_sizes/font_size = 10
 text = "2025-09-22"
 horizontal_alignment = 2
 
-[node name="Time" type="Label" parent="Timestamp"]
+[node name="Time" type="Label" parent="h/Timestamp"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
 theme_override_fonts/font = ExtResource("1_o2lft")
@@ -47,16 +87,74 @@ theme_override_font_sizes/font_size = 10
 text = "19:19"
 horizontal_alignment = 2
 
-[node name="Spacer" type="Control" parent="."]
+[node name="Spacer" type="Control" parent="h"]
 custom_minimum_size = Vector2(8, 0)
 layout_mode = 2
+mouse_filter = 1
 
-[node name="DeleteButton" type="Button" parent="."]
+[node name="LoadButton" type="Button" parent="h"]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_pressed_color = Color(0.047058824, 0.047058824, 0.047058824, 1)
+theme_override_colors/font_hover_color = Color(0.047058824, 0.047058824, 0.047058824, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.047058824, 0.047058824, 0.047058824, 1)
 theme_override_fonts/font = ExtResource("1_o2lft")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_ve62j")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_br5eh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_rdjre")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ym6fp")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_pqsge")
+text = "TR_MENU_LOADSAVE_LOAD"
+icon_alignment = 1
+
+[node name="OverwriteButton" type="Button" parent="h"]
+custom_minimum_size = Vector2(92, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_pressed_color = Color(0.047058824, 0.047058824, 0.047058824, 1)
+theme_override_colors/font_hover_color = Color(0.047058824, 0.047058824, 0.047058824, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.047058824, 0.047058824, 0.047058824, 1)
+theme_override_fonts/font = ExtResource("1_o2lft")
+theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_pqsge")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ym6fp")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5i445")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_ym6fp")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_pqsge")
-text = "DEL"
+text = "TR_MENU_LOADSAVE_OVERWRITE"
+icon_alignment = 1
+
+[node name="DeleteButton" type="Button" parent="h"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_o2lft")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ve62j")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_qcejg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_bdw1d")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ym6fp")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_pqsge")
+icon = ExtResource("4_ve62j")
+icon_alignment = 1
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="button_up" from="h/LoadButton" to="." method="_on_load_button_button_up"]
+[connection signal="focus_entered" from="h/LoadButton" to="." method="_on_delete_button_focus_entered"]
+[connection signal="focus_exited" from="h/LoadButton" to="." method="_on_delete_button_focus_exited"]
+[connection signal="mouse_entered" from="h/LoadButton" to="." method="_on_delete_button_mouse_entered"]
+[connection signal="mouse_exited" from="h/LoadButton" to="." method="_on_delete_button_mouse_exited"]
+[connection signal="button_up" from="h/OverwriteButton" to="." method="_on_overwrite_button_button_up"]
+[connection signal="focus_entered" from="h/OverwriteButton" to="." method="_on_delete_button_focus_entered"]
+[connection signal="focus_exited" from="h/OverwriteButton" to="." method="_on_delete_button_focus_exited"]
+[connection signal="mouse_entered" from="h/OverwriteButton" to="." method="_on_delete_button_mouse_entered"]
+[connection signal="mouse_exited" from="h/OverwriteButton" to="." method="_on_delete_button_mouse_exited"]
+[connection signal="button_up" from="h/DeleteButton" to="." method="_on_delete_button_button_up"]
+[connection signal="focus_entered" from="h/DeleteButton" to="." method="_on_delete_button_focus_entered"]
+[connection signal="focus_exited" from="h/DeleteButton" to="." method="_on_delete_button_focus_exited"]
+[connection signal="mouse_entered" from="h/DeleteButton" to="." method="_on_delete_button_mouse_entered"]
+[connection signal="mouse_exited" from="h/DeleteButton" to="." method="_on_delete_button_mouse_exited"]

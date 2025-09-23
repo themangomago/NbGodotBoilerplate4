@@ -179,11 +179,18 @@ func _ready():
 	## Load user config file
 	#user_config = core_load_user_config(user_config)
 	#input_config()
-	pass
 	
 	print(user_config)
 	## Setup signals
 	vid_signal_setup()
+	
+	scan_savegames()
+	## DUMMY
+	#(version: int, timestamp: int, savename: String, filename: String, is_autosave: bool)
+	#var dummysave1 = SaveGameFile.new(1, 1758472438, "Test Save 1", "dummyfile.sav", false)
+	#var dummysave2 = SaveGameFile.new(1, 1758198589, "Test Save 2", "dummyfile2.sav", false)
+	#savegames_headers.append(dummysave1)
+	#savegames_headers.append(dummysave2)
 	
 
 

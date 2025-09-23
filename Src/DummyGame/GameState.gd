@@ -8,9 +8,11 @@ func _init() -> void:
 func new_game() -> void:
 	counter_value = 0
 
-func load_game(file: SaveGameFile) -> void:
-	
-	pass
+func load_game(state: Dictionary) -> bool:
+	if state.has("counter_value"):
+		counter_value = state.get("counter_value")
+		return true
+	return false
 
-func save_game() -> void:
-	pass
+func get_payload() -> Dictionary:
+	return {"counter_value": counter_value}
