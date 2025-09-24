@@ -190,8 +190,8 @@ func _ready():
 	
 	## DUMMY
 	#(version: int, timestamp: int, savename: String, filename: String, is_autosave: bool)
-	#var dummysave1 = SaveGameFile.new(1, 1758472438, "Test Save 1", "dummyfile.sav", false)
-	#var dummysave2 = SaveGameFile.new(1, 1758198589, "Test Save 2", "dummyfile2.sav", false)
+	#var dummysave1 = SaveGameHeader.new(1, 1758472438, "Test Save 1", "dummyfile.sav", false)
+	#var dummysave2 = SaveGameHeader.new(1, 1758198589, "Test Save 2", "dummyfile2.sav", false)
 	#savegames_headers.append(dummysave1)
 	#savegames_headers.append(dummysave2)
 	

@@ -19,7 +19,7 @@ var _font_color_normal: Color
 # States
 var _id : int = -1
 var _is_focused := false
-var _header : SaveGameFile = null
+var _header : SaveGameHeader = null
 var _isLoad: bool = false
 
 func _ready() -> void:
@@ -37,7 +37,7 @@ func _ready() -> void:
 	$Bg.color = _bg_color_hover
 	$Bg.hide()
 
-func setup(id: int, header: SaveGameFile, isLoad: bool):
+func setup(id: int, header: SaveGameHeader, isLoad: bool):
 	_id = id
 	_header = header
 	_isLoad = isLoad

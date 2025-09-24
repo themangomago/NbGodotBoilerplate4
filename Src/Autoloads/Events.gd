@@ -1,12 +1,14 @@
 extends Node
 
-#warning-ignore-all:unused_signal
+# Suppress all warnings for unused signals in this file
+@warning_ignore_start("unused_signal")
 
 ###############################################################################
 # Global Signal List
 ###############################################################################
 
 # Level Management
+
 signal new_game()
 
 # Sound
@@ -26,12 +28,14 @@ signal take_screenshot()
 ###########################################################################
 
 signal menu_switch_new_game()
-signal menu_switch_load_game(index: int)
-signal menu_switch_save_game(save_name: String)
-signal menu_switch_overwrite_game(index: int)
 signal menu_switch_resume_game()
 signal menu_switch_main_menu()
 
+
+signal menu_save_load_game(index: int)
+signal menu_save_game(save_name: String)
+signal menu_save_overwrite_game(index: int)
+signal menu_save_delete_game(index: int)
 
 signal menu_control_key_assign_entered()
 signal menu_control_key_assign_finished()
@@ -54,3 +58,7 @@ signal vid_window_center_changed()
 signal vid_brightness_change(value)
 ## Emitted if the language has changed in menus
 signal menu_language_change(value)
+
+
+
+@warning_ignore_restore("unused_signal")

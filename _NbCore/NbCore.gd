@@ -12,7 +12,7 @@ var core_config : Resource = null
 ## Resolution list derived from USER_CONFIG_MODEL
 var resolution_list: Array
 
-var savegames_headers : Array[SaveGameFile]
+var savegames_headers : Array[SaveGameHeader]
 
 const SAVE_PATH := "user://saves"
 
@@ -140,7 +140,7 @@ func scan_savegames() -> void:
 func sort_savegames() -> void:
 	if savegames_headers.is_empty():
 		return
-	savegames_headers.sort_custom(func(a: SaveGameFile, b: SaveGameFile) -> bool:
+	savegames_headers.sort_custom(func(a: SaveGameHeader, b: SaveGameHeader) -> bool:
 		var at := a.get_timestamp()
 		var bt := b.get_timestamp()
 		if at == bt:
@@ -148,7 +148,7 @@ func sort_savegames() -> void:
 		return at > bt
 	)
 
-func load_save_header(file_name: String) -> SaveGameFile:
+func load_save_header(file_name: String) -> SaveGameHeader:
 	var path = SAVE_PATH + "/" + file_name
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null: return null
@@ -157,7 +157,7 @@ func load_save_header(file_name: String) -> SaveGameFile:
 	var savename = file.get_pascal_string()
 	var is_autosave = file.get_8() == 1
 	file.close()
-	return SaveGameFile.new(version, timestamp, savename, file_name, is_autosave)
+	return SaveGameHeader.new(version, timestamp, savename, file_name, is_autosave)
 
 func load_save_payload(file_name: String) -> Dictionary:
 	var path = SAVE_PATH + "/" + file_name
@@ -179,9 +179,7 @@ func load_save_payload(file_name: String) -> Dictionary:
 	file.close()
 	return payload
 
-
-
-func save_game(header: SaveGameFile, payload: Dictionary) -> bool:
+func save_game(header: SaveGameHeader, payload: Dictionary) -> bool:
 	var path := SAVE_PATH + "/" + header.get_filename()
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	if file == null:
@@ -200,6 +198,22 @@ func save_game(header: SaveGameFile, payload: Dictionary) -> bool:
 
 	file.flush() # optional but nice to have
 	file.close()
+	Log.info("Game saved to file: " + str(header.get_filename()))
 	return true
+
+func delete_savegame(id: int) -> void:
+	var file_name := savegames_headers[id].get_filename()
+	var save_path := SAVE_PATH + "/" + file_name
+
+	if FileAccess.file_exists(save_path):
+		var dir := DirAccess.open(SAVE_PATH)
+		if dir:
+			var err = dir.remove(file_name)
+			print(err)
+			if err != OK:
+				Log.error("Could not delete save file: " + str(file_name))
+				return
+		Log.info("Deleted save file: " + str(file_name))
+
 
 #endregion

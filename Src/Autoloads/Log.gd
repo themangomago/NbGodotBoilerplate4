@@ -113,9 +113,8 @@ func _write(flag: Types.LogLevel, message: String):
 			print(string)
 
 	# Console Log
-	#if cfg.core_config.logger_console_enabled and cfg.logger_console_trace_level_flags & flag:
-		## TODO: add console
-		#pass
+	if logger_console_enabled and logger_console_trace_level_flags & flag:
+		Console.add_line(message, flag)
 #
 	#if cfg.logger_remote_enabled and cfg.logger_remote_trace_level_flags & flag:
 		#pass

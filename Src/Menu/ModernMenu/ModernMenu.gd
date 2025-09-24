@@ -278,7 +278,7 @@ func _switch(to):
 #region load-save
 func _loadsave_load(id: int) -> void:
 	_switch("MainMenu")
-	Events.emit_signal("menu_switch_load_game", id)
+	Events.emit_signal("menu_save_load_game", id)
 	
 func _loadsave_overwrite(id) -> void:
 	$Views/LoadSaveWindow/Window/Panel/s/Text.set_text(tr("TR_MENU_LOADSAVE_OVERWRITE_WINDOW_TEXT"))
@@ -301,13 +301,16 @@ func _on_load_save_button_yes_button_up() -> void:
 	$Views/LoadSaveWindow/Window.hide()
 	if _loadsave_window_type == "overwrite":
 		_switch("MainMenu")
-		Events.emit_signal("menu_switch_overwrite_game", _loadsave_window_id)
+		Events.emit_signal("menu_save_overwrite_game", _loadsave_window_id)
+	elif _loadsave_window_type == "delete":
+		_switch("MainMenu")
+		Events.emit_signal("menu_save_delete_game", _loadsave_window_id)
 
 
 func _on_save_button_button_up() -> void:
 	var file = $Views/LoadSaveWindow/w/NewSave/LineEdit.text
 	_switch("MainMenu")
-	Events.emit_signal("menu_switch_save_game", file)
+	Events.emit_signal("menu_save_game", file)
 	
 
 #endregion

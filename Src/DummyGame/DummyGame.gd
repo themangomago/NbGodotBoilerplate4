@@ -32,7 +32,7 @@ func save_game(id: int):
 	print("save " + str(id))
 	print(payload)
 	# Header is created at game manager
-	var header: SaveGameFile = Global.savegames_headers[id]
+	var header: SaveGameHeader = Global.savegames_headers[id]
 	
 	if Global.save_game(header, payload):
 		print("Save completed")

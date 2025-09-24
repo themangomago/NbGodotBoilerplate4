@@ -16,9 +16,12 @@ func _ready() -> void:
 	Events.connect("menu_switch_new_game", new_game)
 	Events.connect("menu_switch_resume_game", resume_game)
 	Events.connect("menu_switch_main_menu", main_menu)
-	Events.connect("menu_switch_load_game", load_game)
-	Events.connect("menu_switch_save_game", save_game)
-	Events.connect("menu_switch_overwrite_game", overwrite_game)
+	Events.connect("menu_save_load_game", load_game)
+	
+	
+	Events.connect("menu_save_game", save_game)
+	Events.connect("menu_save_overwrite_game", overwrite_game)
+	Events.connect("menu_save_delete_game", delete_game)
 	
 	# Show the main menu
 	main_menu() 
@@ -46,7 +49,7 @@ func save_game(savename: String) -> void:
 	var timestamp: int = Time.get_unix_time_from_system()
 	if savename == "": savename = "Unnamed " + str(timestamp)
 	var filename = "Save_" + str(timestamp) + ".sav"
-	var header = SaveGameFile.new(1, timestamp, savename, filename, false)
+	var header = SaveGameHeader.new(1, timestamp, savename, filename, false)
 	Global.savegames_headers.append(header)
 	var id = Global.savegames_headers.size() - 1
 	# Unpause game
@@ -55,16 +58,22 @@ func save_game(savename: String) -> void:
 	$Menu/Menu.hide()
 
 func overwrite_game(id: int) -> void:
-	print("overwrite")
 	$GameHolder.process_mode = Node.PROCESS_MODE_INHERIT
 	$GameHolder.get_child(0).save_game(id)
 	$Menu/Menu.hide()
+
+func delete_game(id: int) -> void:
+	Global.delete_savegame(id)
+	main_menu() 
+	
 
 func resume_game() -> void:
 	$Menu/Menu.hide()
 	$GameHolder.process_mode = Node.PROCESS_MODE_INHERIT
 
 func main_menu() -> void:
-	print("menu")
+	print("main_menu() : GameManager")
+	Global.scan_savegames()
+	Global.sort_savegames()
 	$Menu/Menu.show_menu(true if $GameHolder.get_child_count() > 0 else false)
 	$GameHolder.process_mode = Node.PROCESS_MODE_DISABLED

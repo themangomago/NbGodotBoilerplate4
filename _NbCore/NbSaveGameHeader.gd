@@ -1,4 +1,4 @@
-class_name SaveGameFile
+class_name SaveGameHeader
 
 var _version : int = 0
 var _timestamp : int
