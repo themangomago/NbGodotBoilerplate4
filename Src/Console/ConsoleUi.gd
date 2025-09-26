@@ -9,7 +9,7 @@ var _autocompletes = []
 func _ready():
 	self.hide()
 	Console.connect("console_toggle", Callable(self, "_console_toggle"))
-	Console.connect("console_add_line", Callable(self, "_console_add_line"))
+	Console.connect("console_ui_add_line", Callable(self, "_console_add_line"))
 	_console_add_line("Type 'help' for an overview.", Types.LogLevel.INFO)
 	$Window/v/Input.keep_editing_on_text_submit = true
 
