@@ -42,7 +42,7 @@ size_flags_horizontal = 3
 mouse_filter = 1
 
 [node name="Button0" type="Button" parent="h"]
-custom_minimum_size = Vector2(72, 0)
+custom_minimum_size = Vector2(84, 0)
 layout_mode = 2
 focus_next = NodePath("../Button1")
 focus_previous = NodePath("../..")
@@ -50,7 +50,7 @@ button_mask = 3
 icon_alignment = 1
 
 [node name="Button1" type="Button" parent="h"]
-custom_minimum_size = Vector2(72, 0)
+custom_minimum_size = Vector2(84, 0)
 layout_mode = 2
 focus_next = NodePath("../Button2")
 focus_previous = NodePath("../Button0")
@@ -58,17 +58,9 @@ button_mask = 3
 icon_alignment = 1
 
 [node name="Button2" type="Button" parent="h"]
-custom_minimum_size = Vector2(72, 0)
+custom_minimum_size = Vector2(84, 0)
 layout_mode = 2
-focus_next = NodePath("../Button3")
 focus_previous = NodePath("../Button1")
-button_mask = 3
-icon_alignment = 1
-
-[node name="Button3" type="Button" parent="h"]
-custom_minimum_size = Vector2(72, 0)
-layout_mode = 2
-focus_previous = NodePath("../Button2")
 button_mask = 3
 icon_alignment = 1
 
@@ -77,4 +69,3 @@ icon_alignment = 1
 [connection signal="button_up" from="h/Button0" to="." method="_on_button_0_button_up"]
 [connection signal="button_up" from="h/Button1" to="." method="_on_button_1_button_up"]
 [connection signal="button_up" from="h/Button2" to="." method="_on_button_2_button_up"]
-[connection signal="button_up" from="h/Button3" to="." method="_on_button_3_button_up"]

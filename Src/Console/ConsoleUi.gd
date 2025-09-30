@@ -1,19 +1,35 @@
 extends Control
 
-var _history = []
-var _history_index = 0
-var _autocomplete_index = -1
-var _autocompletes = []
+## Scene: ConsoleUI
+##
+## The user interface for the console. This scene needs to be instantiated.
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	self.hide()
-	Console.connect("console_toggle", Callable(self, "_console_toggle"))
-	Console.connect("console_ui_add_line", Callable(self, "_console_add_line"))
+# Command history
+var _history = []
+# Index pointer in the history
+var _history_index = 0
+# Autocomplete list
+var _autocompletes = []
+# Index pointer in the autocomplete list
+var _autocomplete_index = -1
+
+
+func _ready() -> void:
+	# Setup console
+	var app_name = ProjectSettings.get_setting("application/config/name")
+	_console_add_line(app_name + " v" + "%s" % str(Global.GAME_VERSION), Types.LogLevel.INFO)
 	_console_add_line("Type 'help' for an overview.", Types.LogLevel.INFO)
 	$Window/v/Input.keep_editing_on_text_submit = true
+	$AutocompleteWindow.position.y = $Window.size.y
+	$AutocompleteWindow.clear()
+	$AutocompleteWindow.hide()
+	self.hide()
+	
+	# Setup signals 
+	Console.connect("console_toggle", Callable(self, "_console_toggle"))
+	Console.connect("console_ui_add_line", Callable(self, "_console_add_line"))
 
-
+# Add new console line
 func _console_add_line(text: String, level: Types.LogLevel):
 	var flag_name := ""
 	var color := ""
@@ -37,21 +53,26 @@ func _console_add_line(text: String, level: Types.LogLevel):
 	else:
 		$Window/v/History.append_text("\n" + "[color=" + color + "]" + flag_name + "[/color]: " + text)
 
+# Toggle console
 func _console_toggle():
 	if not self.visible:
 		self.show()
-		#$Window/v/Input.grab_focus()
 		$Window/v/Input.call_deferred("grab_focus")
-		
 	else:
 		self.hide()
 
-
+# Handle user input
 func _process_input(line: String):
 	var input = line.split(" ")
-	var command = Console.get_command(input[0])
+	var command: ConsoleCmd = Console.get_command(input[0])
 	
 	if command:
+		# Cheat protection check
+		if command.is_cheat():
+			if not Console.is_cheating_allowed():
+				_console_add_line("Cheating is not allowed.", Types.LogLevel.WARNING)
+				return
+		
 		if input.size() > 1:
 			# Value provided
 			if command.get_value_type() != TYPE_NIL:
@@ -78,20 +99,19 @@ func _process_input(line: String):
 		_console_add_line("Command '" + str(input[0]) + "' not found.", Types.LogLevel.ERROR)
 
 
+# Handle text input
 func _on_input_text_submitted(new_text):
 	$Window/v/Input.text = ""
 	_process_input(new_text)
 	_history.append(new_text)
 	_history_index = _history.size() - 1
 
-
+# Grab the focus if lost
 func _on_input_focus_exited() -> void:
 	if self.visible:
-		# Make sure we dont ever lose focus while console is active
 		$Window/v/Input.call_deferred("grab_focus")
-		# TODO: extend this while completion is active
 
-
+# Handle autocomplete
 func _on_input_text_changed(new_text: String) -> void:
 	if new_text.length() >= 3:
 		_autocompletes = Console.get_autocompletion(new_text)
@@ -105,23 +125,20 @@ func _on_input_text_changed(new_text: String) -> void:
 		
 			$AutocompleteWindow.show()
 
-
 			if _autocomplete_index == -1:
 				_autocomplete_index = 0
 			elif _autocomplete_index >= _autocompletes.size():
 				_autocomplete_index = _autocompletes.size() - 1
 				
 			$AutocompleteWindow.select(_autocomplete_index)
-				
 		else:
 			$AutocompleteWindow.hide()
 			_autocomplete_index = -1
-		
 	else:
 		$AutocompleteWindow.hide()
 		_autocomplete_index = -1
 
-
+# Autocomplete user input handling
 func _on_input_gui_input(event: InputEvent) -> void:
 	# Autocomplete is up
 	if $AutocompleteWindow.visible:

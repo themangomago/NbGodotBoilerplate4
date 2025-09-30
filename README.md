@@ -26,6 +26,7 @@ This is a simple kickstarter project for Godot projects. It comes with some stan
 ## 1.1 File Structure
 
 - \_NbCore -> Core boilerplate core functionalities and classes
+  - Templates\Node\DefaultTemplate.gd -> Basic Coding Template.
   - NbCore.gd -> This is inherited by the Autoload `Global`.
   - NbCoreConfig.gd -> Class for GameManager configuration.
   - NbConsoleCmd.gd -> Class to add console commands.
@@ -45,21 +46,49 @@ This is a simple kickstarter project for Godot projects. It comes with some stan
 	- ModManager.gd -> Basic modding framework.
 
 ## 1.2 Autoloads / Globals / Singletons
+For easier global access, the boilerplate uses two approaches: first, autoloads, and second, signal-driven events (Events.gd). A list of all autoloads can be found in section 1.1 File Structure.
 
 ## 1.3 Game Manager Configuration
+The starting point of every boilerplate project is the GameManager. The provided GameManager is just an example of how a game manager could look like.
+Configuration of the Boilerplate has been streamlined for the Godot 4.x rework.
 
 ## 1.4 User Configuration Model
 
 
 # 2. Features
+## 2.1 Log
+The Logger was renamed to just Log because of a new debugging feature of Godot. The `Log` is a powerful util to output infos, warning and output to the user using console, file or stdout (must be build accordingly).
+In the `NbCoreConfig` you can select which output severity shall be loggeg to which output.
+There are APIs for `info`, `warning`, `error` and `debug`.
 
-## 2.1 Console
+Example:
+`Log.warning("This is a test warning")`
 
-## 2.2 Log
+## 2.2 Console
+The console consists of tree building blocks. The Autoload `Console.gd` for global access and storage of commands. The file `NbConsoleCmd.gd` which contains the `ConsoleCmd` class. This is the structure for the commands. And the `ConsoleUi.gd`and `ConsoleUi.tscn` which is the user interface for the console.
+The console features a command history, a simple autocomplete and easy to use command interface.
+
+### 2.2.1 Constructing a Console Command
+Console commands can be constructed from everywhere in the project after loading the autoload. To construct a new command you will need to utilize the `ConsoleCmd` class. 
+`
+	Console.add_command(
+		ConsoleCmd.new(
+			"set_ammo", #Console command name
+			_cheat_ammo, #The callback function that will be called
+			10, #Default value
+			"Adds ammo to the player", #Help text
+		)
+	)
+`
+There are some extendible parameters like `set_range` and `set_cheat_protection` which need to be set on the `ConsoleCmd` variable before adding to the `Console`.
+
+### 2.2.2 Cheat Protection
+While cheat commands help a lot during development you wont allow the player to use them while unlocking achievements. Therefore there is a small function `Console.is_cheating_allowed()` which needs to be implemented. By default this is just true, because saving the cheat state is highly recommended in your game state.
 
 ## 2.3 Menu
 
 ## 2.4 Localization
+ The whole boilerplate (expect the log and console) are supporting localization out of the box. We encourage everyone starting a new project to directly utilize it. For more informations look up tr() in the Godot docs.
 
 ## 2.5 Savegames
 The built-in save game system is derived in different parts

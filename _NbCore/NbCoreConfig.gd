@@ -8,8 +8,6 @@ class_name NbCoreConfig extends Resource
 ## Default seed for seed based RNG. (Opt.)
 @export var rng_default_seed: int = 0
 
-
-
 @export_group("User Config", "user_config")
 ## Latest config version
 @export var user_config_version: int = 1

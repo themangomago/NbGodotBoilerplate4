@@ -26,6 +26,13 @@ func _physics_process(_delta: float) -> void:
 # Public APIs
 #===============================================================================
 
+## This implementation will be triggered when a cheat protected command will be 
+## called. As cheating needs to be part of the saved game state, it is highly 
+## implementation specific.
+func is_cheating_allowed() -> bool:
+	# The implementation needs to be done here
+	return true
+
 ## Add a new command to the console.
 ## Takes [param command] as input.
 func add_command(command: ConsoleCmd) -> void:
@@ -75,30 +82,27 @@ func _add_default_commands() -> void:
 	add_command(
 		ConsoleCmd.new(
 			"version",
+			_get_version,
 			null,
 			"Get the game version",
-			self,
-			"_get_version"
 		)
 	)
 	# Help
 	add_command(
 		ConsoleCmd.new(
 			"help",
+			_get_help,
 			"",
 			"Diplay help",
-			self,
-			"_get_help"
 		)
 	)
 	# Quit
 	add_command(
 		ConsoleCmd.new(
 			"quit",
+			_quit,
 			null,
 			"Just quit.",
-			self,
-			"_quit",
 		)
 	)
 

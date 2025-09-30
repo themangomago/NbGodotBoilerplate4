@@ -29,10 +29,11 @@ var _pending_changes := []
 func _ready():
 	_init_menu()
 	
-	get_viewport().connect("gui_focus_changed", Callable(self, "_gui_focus_changed"))
+	$Views/Settings/Window.hide()
 	
-	#Events.connect("menu_control_key_assign_entered", Callable(self, "_window_assign_show"))
-	#Events.connect("menu_control_key_assign_finished", Callable(self, "_window_assign_hide"))
+	get_viewport().connect("gui_focus_changed", _gui_focus_changed)
+	Events.connect("menu_control_key_assign_entered", _window_assign_show)
+	Events.connect("menu_control_key_assign_finished", _window_assign_hide)
 
 func show_menu(isGameActive: bool) -> void:
 	if isGameActive:
@@ -45,10 +46,11 @@ func show_menu(isGameActive: bool) -> void:
 
 
 func _window_assign_show():
-	$Views/Settings/WindowAssign.show()
+	$Views/Settings/Window.show()
+
 
 func _window_assign_hide():
-	$Views/Settings/WindowAssign.hide()
+	$Views/Settings/Window.hide()
 
 func _debug(str: String):
 	if debug:
@@ -183,7 +185,7 @@ func _control_remapping_remove_duplicate_entries(category: String, key_event: Di
 	for option in Global.user_config[category]:
 		for i in range(Global.user_config[category][option].size()):
 			var key = Global.user_config[category][option][i]
-			if key > 0:
+			if key:
 				if key_event.device == key.device and key_event.type == key.type:
 					if key_event.code == key.code:
 						# Double entry found - remove it

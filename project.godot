@@ -28,6 +28,10 @@ ModManager="*res://Src/Autoloads/ModManager.gd"
 
 window/stretch/mode="canvas_items"
 
+[editor]
+
+script/templates_search_path="res://_NbCore/Templates"
+
 [input]
 
 ui_toggle_console={

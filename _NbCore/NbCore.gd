@@ -7,7 +7,7 @@ extends Node
 ## by the loading the user config file.
 var user_config := {}
 
-var core_config : Resource = null
+var core_config : NbCoreConfig = null
 
 ## Resolution list derived from USER_CONFIG_MODEL
 var resolution_list: Array
@@ -16,9 +16,17 @@ var savegames_headers : Array[SaveGameHeader]
 
 const SAVE_PATH := "user://saves"
 
-################################################################################
+#===============================================================================
+# Core Helper Functions
+#===============================================================================
+#region Core Helper
+func parse_core_config(config: NbCoreConfig) -> void:
+	core_config = config
+#endregion
+
+#===============================================================================
 # Video Functions
-################################################################################
+#===============================================================================
 #region Video Functions
 func vid_set_resolution_list(list: Array):
 	resolution_list = list
@@ -43,9 +51,9 @@ func vid_center_window() -> void: get_window().position = (DisplayServer.screen_
 func vid_set_fullscreen(value: bool) -> void: DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN) if value else DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 #endregion
 
-################################################################################
+#===============================================================================
 # User Config Functions
-################################################################################
+#===============================================================================
 #region User Config Functions
 func parse_user_config_model(model: Dictionary) -> Dictionary:
 	var config := {}
@@ -114,9 +122,9 @@ func save_user_config(data: Dictionary) -> void:
 	file.store_string(JSON.stringify(data, "\t"))
 #endregion
 
-################################################################################
+#===============================================================================
 # Save Game Helper
-################################################################################
+#===============================================================================
 #region Save Game Helper
 func scan_savegames() -> void:
 	var dir := DirAccess.open(SAVE_PATH)

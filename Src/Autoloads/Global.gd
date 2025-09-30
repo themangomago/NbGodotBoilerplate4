@@ -1,4 +1,4 @@
-###############################################################################
+#===============================================================================
 # Copyright (c) 2026 NimbleBeasts
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,14 +18,15 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-###############################################################################
+#===============================================================================
+
 extends "res://_NbCore/NbCore.gd"
+
 ##
 ## Global singleton
 ##
-## @desc:
-##		This is mainly used for configurative purposes. As well as global helper
-##		functions.
+## This is mainly used for configurative purposes. As well as global helper
+## functions.
 ##
 
 const GAME_VERSION = 1.0
@@ -33,7 +34,7 @@ const CONFIG_VERSION = 1
 
 const USER_CONFIG_MODEL := {
 	"meta": {
-		"configVersion": "CONFIG_VERSION", #Generated
+		"configVersion": "CONFIG_VERSION",
 	},
 	"configurable": [
 		{
@@ -41,12 +42,12 @@ const USER_CONFIG_MODEL := {
 			"tr": "TR_MENU_SETTINGS_VIDEO",
 			"options": [
 				{
-					"name": "resolution", #Generated
+					"name": "resolution",
 					"tr": "TR_MENU_SETTINGS_RESOLUTION",
 					"values": [
 						#Vector2(320, 180),
 						#Vector2(640, 360),
-						Vector2(1280, 720), #our default
+						Vector2(1280, 720), #our default for development
 						Vector2(1366, 768), #7.47%
 						Vector2(1920, 1080), #67.60%
 						Vector2(2560, 1440), #8.23%
@@ -56,7 +57,7 @@ const USER_CONFIG_MODEL := {
 					"signal": "vid_resolution_changed"
 				},
 				{
-					"name": "fullscreen", #Generated
+					"name": "fullscreen",
 					"tr": "TR_MENU_SETTINGS_FULLSCREEN",
 					"values": [
 						false,
@@ -66,7 +67,7 @@ const USER_CONFIG_MODEL := {
 					"signal": "vid_fullscreen_changed"
 				},
 				{
-					"name": "vsync", #Generated
+					"name": "vsync",
 					"tr": "TR_MENU_SETTINGS_VSYNC",
 					"values": [
 						false,
@@ -76,7 +77,7 @@ const USER_CONFIG_MODEL := {
 					"signal": "vid_vsync_changed"
 				},
 				{
-					"name": "brightness", #Generated
+					"name": "brightness",
 					"tr": "TR_MENU_SETTINGS_BRIGHTNESS",
 					"range": [
 						0.5,
@@ -93,7 +94,7 @@ const USER_CONFIG_MODEL := {
 			"tr": "TR_MENU_SETTINGS_AUDIO",
 			"options": [
 				{
-					"name": "sound",  #Generated
+					"name": "sound", 
 					"tr": "TR_MENU_SETTINGS_SOUND",
 					"range": [
 						0,
@@ -104,7 +105,7 @@ const USER_CONFIG_MODEL := {
 					"signal": "menu_sound_changed"
 				},
 				{
-					"name": "music",  #Generated
+					"name": "music", 
 					"tr": "TR_MENU_SETTINGS_MUSIC",
 					"range": [
 						0,
@@ -121,7 +122,7 @@ const USER_CONFIG_MODEL := {
 			"tr": "TR_MENU_SETTINGS_LANGUAGE",
 			"options": [
 				{
-					"name": "language",  #Generated
+					"name": "language", 
 					"tr": "TR_MENU_SETTINGS_LANGUAGE",
 					"values": [
 						"TR_MENU_SETTINGS_LANGUAGE_EN"
@@ -144,15 +145,25 @@ const USER_CONFIG_MODEL := {
 					"keys": [
 						{"type": 1, "device": 0, "code": 4194320},
 						{"type": 2, "device": 0, "code": 1},
-						{"type": 1, "device": 0, "code": 87},
-						{ "type": 4, "device": 0, "code": 3 }
+						{"type": 1, "device": 0, "code": 87}
 					]
+				},
+				{
+					"name": "control_down",
+					"tr": "TR_MENU_SETTINGS_CONTROL_DOWN",
+					"keys": [{}, {}, {}]
 				},
 				{
 					"name": "control_right",
 					"tr": "TR_MENU_SETTINGS_CONTROL_RIGHT",
-					"keys": [{}, {}, {}, {}]
+					"keys": [{}, {}, {}]
 				},
+				{
+					"name": "control_left",
+					"tr": "TR_MENU_SETTINGS_CONTROL_LEFT",
+					"keys": [{}, {}, {}]
+				},
+
 			]
 		}
 	]
@@ -180,7 +191,6 @@ func _ready():
 	#user_config = core_load_user_config(user_config)
 	#input_config()
 	
-	print(user_config)
 	## Setup signals
 	vid_signal_setup()
 	
@@ -201,12 +211,12 @@ func initialize(manager: Node):
 	# Set the game manager for further references
 	game_manager = manager
 	
+	# Parse core config
+	core_config = manager.config.duplicate(true)
+
 	# Setup Logger
-	Log.setup(manager.config)
-	# Log.error("test error")
-	# Log.info("test info")
-	# Log.warn("test warn")
-	# Log.debug("test debug")
+	Log.setup()
+
 
 	# Video setup
 	vid_setup()

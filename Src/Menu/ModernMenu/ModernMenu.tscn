@@ -142,6 +142,7 @@ theme_override_font_sizes/font_size = 10
 text = "© 2025 [Your Name or Studio] - Icons by Icon8"
 
 [node name="LoadSaveWindow" type="Control" parent="Views"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -441,24 +442,51 @@ theme_override_fonts/font = ExtResource("4_2rb8d")
 text = "TR_MENU_B_ACCEPT"
 alignment = 0
 
-[node name="WindowAssign" type="Panel" parent="Views/Settings"]
-visible = false
-layout_mode = 0
-offset_left = 272.0
-offset_top = 192.0
-offset_right = 624.0
-offset_bottom = 312.0
-
-[node name="Label" type="Label" parent="Views/Settings/WindowAssign"]
+[node name="Window" type="ColorRect" parent="Views/Settings"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Press any key to assign.
-Press ESC to cancel."
+color = Color(0, 0, 0, 0.4)
+
+[node name="Panel" type="Panel" parent="Views/Settings/Window"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -176.0
+offset_top = -60.0
+offset_right = 176.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="s" type="Control" parent="Views/Settings/Window/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Text" type="Label" parent="Views/Settings/Window/Panel/s"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_2rb8d")
+theme_override_font_sizes/font_size = 16
+text = "TR_MENU_SETTINGS_CONTROL_ASSIGN"
 autowrap_mode = 2
-metadata/_edit_lock_ = true
 
 [connection signal="button_up" from="Views/MainMenu/v/ButtonResume" to="." method="_on_button_resume_button_up"]
 [connection signal="button_up" from="Views/MainMenu/v/ButtonNewGame" to="." method="_on_button_new_game_button_up"]
