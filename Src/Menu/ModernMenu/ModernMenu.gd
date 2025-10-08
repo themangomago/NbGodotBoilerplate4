@@ -1,60 +1,78 @@
 extends Control
 
-# TODO:
-# - adapt pending changes to fit all settings options
+## Modern Menu for NbBoilerplate 
+##
+## Full functional menu implementation for the Boilerplate
 
-@export var debug: bool = false
+#===============================================================================
+# Internal Variables
+#===============================================================================
 
 @export var category_button_scene: PackedScene = preload("./Elements/category_button.tscn")
 @export var spinbox_button_scene: PackedScene = preload("./Elements/spinbox_button.tscn")
 @export var input_button_scene: PackedScene = preload("./Elements/input_button.tscn")
 @export var spacer_scene: PackedScene = preload("./Elements/spacer.tscn")
-
 @export var load_save_scene: PackedScene = preload("./Elements/load_save_game.tscn")
+
+
+@onready var n_button_back: Node = $Views/Settings/Window/v/OptionsScroll/h/ButtonHBox/ButtonBack
+@onready var n_button_reset: Node = $Views/Settings/Window/v/OptionsScroll/h/ButtonHBox/ButtonReset
+@onready var n_button_accept: Node = $Views/Settings/Window/v/OptionsScroll/h/ButtonHBox/ButtonAccept
+
+
+@onready var n_view_mainmenu: Node = $Views/MainMenu
+@onready var n_view_settings: Node = $Views/Settings
+
+@onready var n_settings_label: Node = $Views/Settings/Window/Label
+
+@onready var n_options_menu: Node = $Views/Settings/Window/v/OptionsScroll/h/Options
+
+@onready var n_main_button_resume: Node = $Views/MainMenu/v/ButtonResume
+@onready var n_main_button_save_game: Node = $Views/MainMenu/v/ButtonSaveGame
 
 
 var _focus_object: Control = null
 var _focus_keyboard: bool = false
 
 var _current_view: String = "MainMenu"
-
+var _current_settings: String = "Settings"
 var _loadsave_window_id: int = -1
 var _loadsave_window_type: String = "load"
-
 
 # Menu settings that has changed but not yet accepted
 var _pending_changes := []
 
+#===============================================================================
+# Public APIs
+#===============================================================================
+
+func show_menu(isGameActive: bool) -> void:
+	# TODO deprecated?
+	if isGameActive:
+		n_main_button_resume.show()
+		n_main_button_save_game.show()
+	else:
+		n_main_button_resume.hide()
+		n_main_button_save_game.hide()
+	show()
+	
+	
+#===============================================================================
+# Internal APIs
+#===============================================================================
 
 func _ready():
+	# Init the main menu
 	_init_menu()
 	
-	$Views/Settings/Window.hide()
-	
+	# Connect signals
 	get_viewport().connect("gui_focus_changed", _gui_focus_changed)
 	Events.connect("menu_control_key_assign_entered", _window_assign_show)
 	Events.connect("menu_control_key_assign_finished", _window_assign_hide)
+	
+	# Force hide settings
+	n_view_settings.hide()
 
-func show_menu(isGameActive: bool) -> void:
-	if isGameActive:
-		$Views/MainMenu/v/ButtonResume.show()
-		$Views/MainMenu/v/ButtonSaveGame.show()
-	else:
-		$Views/MainMenu/v/ButtonResume.hide()
-		$Views/MainMenu/v/ButtonSaveGame.hide()
-	show()
-
-
-func _window_assign_show():
-	$Views/Settings/Window.show()
-
-
-func _window_assign_hide():
-	$Views/Settings/Window.hide()
-
-func _debug(str: String):
-	if debug:
-		print(str)
 
 func _input(event):
 	# If no element has focus and the player uses keyboard or gamepad - grab focus
@@ -64,22 +82,30 @@ func _input(event):
 
 func _init_menu():
 	# Init option buttons
+	_init_settings_menu()
+	
+	n_button_accept.hide()
+	
+	# Switch to main menu view
+	_switch("MainMenu")
+
+
+func _init_settings_menu():
+	n_settings_label.set_text("TR_MENU_SETTINGS")
+	
+	for child in n_options_menu.get_children():
+		#child.disconnect() TODO
+		child.queue_free()
+	
 	for category in Global.USER_CONFIG_MODEL.configurable:
 		# Setup option buttons
 		var callback = Callable(self, "_submenu_button_up")
 		callback = callback.bind(category.name)
-		
 		var button = category_button_scene.instantiate()
 		button.text = tr(category.tr)
 		button.name = category.name
 		button.connect("button_up", callback)
-		$Views/Settings/w/SubMenu.add_child(button)
-	
-	$Views/Settings/w/ButtonAccept.hide()
-	$Views/Settings/w/OptionMenu.hide()
-	
-	# Switch to main menu view
-	_switch("MainMenu")
+		n_options_menu.add_child(button)
 
 
 func _focus_check(event):
@@ -88,18 +114,18 @@ func _focus_check(event):
 		#if not event.pressed:
 		# TODO: keyboard and gamepad codes
 		if event.keycode == KEY_UP or event.keycode == KEY_DOWN:
-			if $Views/MainMenu.visible:
-				if $Views/MainMenu/v/ButtonResume.visible:
-					$Views/MainMenu/v/ButtonResume.grab_focus()
+			if n_view_mainmenu.visible:
+				if n_main_button_resume.visible:
+					n_main_button_resume.grab_focus()
 				else:
 					$Views/MainMenu/v/ButtonNewGame.grab_focus()
 			else:
-				$Views/Settings/w/ButtonBack.grab_focus()
+				n_button_back.grab_focus()
 
 
 func _setup_submenu(category: String):
 	# Clear old
-	for child in $Views/Settings/w/OptionMenu.get_children():
+	for child in n_options_menu.get_children():
 		#child.disconnect() TODO
 		child.queue_free()
 	
@@ -113,7 +139,7 @@ func _setup_submenu(category: String):
 	assert(index != -1, "HUD: Provided category does not exists in user config model")
 	
 	# Set submenu title
-	$Views/Settings/w/Label.set_text(Global.USER_CONFIG_MODEL.configurable[index].tr)
+	n_settings_label.set_text(Global.USER_CONFIG_MODEL.configurable[index].tr)
 	
 	# TODO: button remapper case
 	
@@ -130,6 +156,9 @@ func _setup_submenu(category: String):
 				# TODO
 				#Log.debug("invalid configuration option found")
 				print("invalid configuration option found")
+				
+	n_options_menu.show()
+
 
 
 func _setup_submenu_add_input(category: String, option: Dictionary):
@@ -140,7 +169,7 @@ func _setup_submenu_add_input(category: String, option: Dictionary):
 	input_button.set_text(tr(option.tr))
 	input_button.set_key_data(Global.user_config[category][option.name])
 	input_button.connect("button_assigned", callback)
-	$Views/Settings/w/OptionMenu.add_child(input_button)
+	n_options_menu.add_child(input_button)
 
 func _setup_submenu_add_spinbox(category: String, option: Dictionary):
 	var callback := Callable(self, "_config_button_up")
@@ -153,32 +182,12 @@ func _setup_submenu_add_spinbox(category: String, option: Dictionary):
 	elif option.has("range"):
 		choice_button.set_range(option.range, Global.user_config[category][option.name], option.step)
 	choice_button.connect("spinbox_button_updated", callback)
-	$Views/Settings/w/OptionMenu.add_child(choice_button)
+	n_options_menu.add_child(choice_button)
 
 func _setup_submenu_add_spacer(option: Dictionary):
 	var spacer = spacer_scene.instantiate()
 	spacer.set_text(tr(option.tr))
-	$Views/Settings/w/OptionMenu.add_child(spacer)
-
-func _input_button_up(slot_id, key_event, option, category):
-	print("...")
-	print(slot_id)
-	print(key_event)
-	print(Global.user_config[category][option])
-	print("...")
-	
-	
-	_control_remapping_remove_duplicate_entries(category, key_event)
-
-	
-	_pending_changes.append({
-		"category": category,
-		"option": option,
-		"value": key_event,
-		"slot": slot_id
-	})
-	_setup_submenu("controls")
-
+	n_options_menu.add_child(spacer)
 
 func _control_remapping_remove_duplicate_entries(category: String, key_event: Dictionary) -> void:
 	# Check if key is already assigned
@@ -197,37 +206,6 @@ func _control_remapping_remove_duplicate_entries(category: String, key_event: Di
 						})
 						break
 						break
-
-
-
-func _config_button_up(value, option, category):
-	# Check if pending change entry exists
-	var exists := false
-	for i in range(_pending_changes.size()):
-		if _pending_changes[i].category == category:
-			if _pending_changes[i].option == option:
-				# Update pending change
-				_pending_changes[i].value = value
-				exists = true
-		i += 1
-	
-	if not exists:
-		# Add new pending change entry
-		_pending_changes.append(
-			{
-				"category": category,
-				"option": option,
-				"value": value
-			}
-		)
-
-
-func _submenu_button_up(category_name):
-	_setup_submenu(category_name)
-	$Views/Settings/w/SubMenu.hide()
-	$Views/Settings/w/OptionMenu.show()
-	$Views/Settings/w/ButtonAccept.show()
-	_focus_object = null
 
 
 func _switch(to):
@@ -277,6 +255,67 @@ func _switch(to):
 		$Views/LoadSaveWindow.show()
 		_focus_object = null
 
+#===============================================================================
+# Callbacks
+#===============================================================================
+
+func _window_assign_show():
+	n_view_settings.show()
+
+func _window_assign_hide():
+	n_view_settings.hide()
+
+
+func _input_button_up(slot_id, key_event, option, category):
+	print("...")
+	print(slot_id)
+	print(key_event)
+	print(Global.user_config[category][option])
+	print("...")
+
+	_control_remapping_remove_duplicate_entries(category, key_event)
+	
+	_pending_changes.append({
+		"category": category,
+		"option": option,
+		"value": key_event,
+		"slot": slot_id
+	})
+	_setup_submenu("controls")
+
+
+
+func _config_button_up(value, option, category):
+	# Check if pending change entry exists
+	var exists := false
+	for i in range(_pending_changes.size()):
+		if _pending_changes[i].category == category:
+			if _pending_changes[i].option == option:
+				# Update pending change
+				_pending_changes[i].value = value
+				exists = true
+		i += 1
+	
+	if not exists:
+		# Add new pending change entry
+		_pending_changes.append(
+			{
+				"category": category,
+				"option": option,
+				"value": value
+			}
+		)
+
+
+func _submenu_button_up(category_name: String):
+	_setup_submenu(category_name)
+	_current_settings = category_name
+	
+	n_button_accept.show()
+	_focus_object = null
+
+
+
 #region load-save
 func _loadsave_load(id: int) -> void:
 	_switch("MainMenu")
@@ -313,8 +352,6 @@ func _on_save_button_button_up() -> void:
 	var file = $Views/LoadSaveWindow/w/NewSave/LineEdit.text
 	_switch("MainMenu")
 	Events.emit_signal("menu_save_game", file)
-	
-
 #endregion
 
 
@@ -349,15 +386,16 @@ func _on_button_resume_button_up():
 
 
 func _on_button_back_button_up():
-	
-	
-	if $Views/Settings/w/SubMenu.visible:
+	if _current_settings == "Settings":
+		# User is in the main settings menu
 		_switch("MainMenu")
 	else:
-		$Views/Settings/w/Label.set_text("TR_MENU_SETTINGS")
-		$Views/Settings/w/SubMenu.show()
-		$Views/Settings/w/OptionMenu.hide()
-		$Views/Settings/w/ButtonAccept.hide()
+		# Coming from sub-menu
+		_init_settings_menu()
+		_current_settings = "Settings"
+		n_button_accept.hide()
+	
+	# Discard all pending changes
 	_pending_changes = []
 
 
@@ -371,7 +409,6 @@ func _on_button_accept_button_up():
 						Global.user_config[change.category][change.option] = change.value
 						if option.has("signal"):
 							Events.emit_signal(option.get("signal"), change.value)
-							_debug("Emitting: " + str(option.get("signal")))
 						# Option found break loop
 						break
 				# Category found break loop
@@ -388,3 +425,7 @@ func _on_button_save_game_button_up() -> void:
 
 func _on_button_load_game_button_up() -> void:
 	_switch("Load")
+
+
+func _on_button_reset_button_up() -> void:
+	pass # Replace with function body.
